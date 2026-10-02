@@ -43,6 +43,22 @@
 
 ## Установка
 
+### Одной командой
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/WhiteK0T/motd/main/install.sh | sudo sh
+```
+
+или через `wget`:
+
+```sh
+wget -qO- https://raw.githubusercontent.com/WhiteK0T/motd/main/install.sh | sudo sh
+```
+
+Установщик сам выбирает способ: если есть `/etc/update-motd.d` (Debian/Ubuntu),
+скрипт ставится туда как `99-motd`, иначе — в `/usr/local/bin/motd` с запуском
+из `/etc/profile.d/zz-motd.sh` (см. ниже).
+
 ### Debian / Ubuntu (`update-motd`)
 
 ```sh

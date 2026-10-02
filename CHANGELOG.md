@@ -7,6 +7,10 @@
 
 ## [Unreleased]
 
+### Added
+- `install.sh` — установка одной командой (`curl … | sudo sh`), сам выбирает
+  `update-motd.d` или `/usr/local/bin` + `profile.d`.
+
 ### Removed
 - Старый скрипт `99-motd` (v1.0.0) — доступен в истории git.
 
