@@ -53,10 +53,12 @@ else
   # и вызываем его из profile.d (его читает /etc/profile при входе).
   mkdir -p "$DESTDIR/usr/local/bin" "$DESTDIR/etc/profile.d"
   install -m 755 "$tmp" "$DESTDIR/usr/local/bin/motd"
-  # Проверка $PS1: показывать баннер только в интерактивной сессии,
-  # чтобы не ломать scp/rsync/ssh host cmd. zz- — чтобы шёл последним.
-  # shellcheck disable=SC2016  # $PS1 раскрывается при входе, а не здесь
-  echo '[ -n "$PS1" ] && /usr/local/bin/motd' > "$DESTDIR/etc/profile.d/zz-motd.sh"
+  # Проверка $- (флаги оболочки, i = интерактивная): показывать баннер только
+  # при входе в терминал, а не в scp/rsync/ssh host cmd/bash -lc.
+  # $PS1 для этого ненадёжен: его могут экспортировать в окружение.
+  # zz- — чтобы шёл последним.
+  # shellcheck disable=SC2016  # $- раскрывается при входе, а не здесь
+  echo 'case $- in *i*) /usr/local/bin/motd ;; esac' > "$DESTDIR/etc/profile.d/zz-motd.sh"
   # Файлы profile.d подключаются через «.», исполняемыми их делать не нужно.
   chmod 644 "$DESTDIR/etc/profile.d/zz-motd.sh"
   echo "Установлено: /usr/local/bin/motd (запуск из /etc/profile.d/zz-motd.sh)"

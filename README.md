@@ -75,12 +75,13 @@ sudo install -m 755 motd.sh /etc/update-motd.d/99-motd
 
 ```sh
 sudo install -m 755 motd.sh /usr/local/bin/motd
-echo '[ -n "$PS1" ] && /usr/local/bin/motd' | sudo tee /etc/profile.d/zz-motd.sh
+echo 'case $- in *i*) /usr/local/bin/motd ;; esac' | sudo tee /etc/profile.d/zz-motd.sh
 ```
 
 Скрипт запускается отдельным процессом, а не через `source`, поэтому его
-переменные не попадают в окружение оболочки. Проверка `$PS1` отключает
-вывод в неинтерактивных сессиях (`scp`, `rsync`, `ssh host cmd`).
+переменные не попадают в окружение оболочки. Проверка `$-` (флаг `i` —
+интерактивная оболочка) отключает вывод в неинтерактивных сессиях
+(`scp`, `rsync`, `ssh host cmd`, `bash -lc`).
 
 ### Вручную
 
